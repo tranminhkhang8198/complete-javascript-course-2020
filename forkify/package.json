@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development",
-    "bulid": "webpack --mode production"
+    "bulid": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open"
   },
   "keywords": [
     "Khang",
@@ -14,8 +15,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "html-webpack-plugin": "^3.2.0",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
     "jquery": "^3.4.1"
