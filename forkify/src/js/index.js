@@ -5,6 +5,7 @@ import Likes from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
+import * as likesView from './views/likesView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 /**
@@ -15,7 +16,6 @@ import { elements, renderLoader, clearLoader } from './views/base';
  */
 
 const state = {};
-
 
 /**
  * SEARCH CONTROLLER
@@ -92,7 +92,10 @@ const controlRecipe = async () => {
 
             // Render recipe
             clearLoader();
-            recipeView.renderRecipe(state.recipe);
+            recipeView.renderRecipe(
+                state.recipe,
+                state.likes.isLiked(id)
+            );
         } catch (err) {
             console.log(err);
             alert('Error processing recipe!');
@@ -135,8 +138,6 @@ elements.shopping.addEventListener('click', e => {
     } else if (e.target.matches('.shopping__count-value')) {
         const val = parseInt(e.target.value, 10);
         state.list.updateCount(id, val);
-
-        console.log(state.list);
     }
 });
 
@@ -144,6 +145,11 @@ elements.shopping.addEventListener('click', e => {
 /**
  * LIKE CONTROLLER
  */
+
+// TESTING
+state.likes = new Likes();
+likesView.toggleLikeMenu(state.likes.getNumLikes());
+
 const controlLike = () => {
     if (!state.likes) state.likes = new Likes();
 
@@ -160,10 +166,10 @@ const controlLike = () => {
         );
 
         // Toggle the like button
+        likesView.toggleLikeBtn(true);
 
         // Add like to UI list
-        console.log(state.likes);
-
+        likesView.renderLike(newLike);
 
     // User HAS yet liked current recipe
     } else {
@@ -171,10 +177,13 @@ const controlLike = () => {
         state.likes.deleteLike(currentID);
 
         // Toggle the like button
+        likesView.toggleLikeBtn(false);
 
         // Remove like from UI list
-        console.log(state.likes);
+        likesView.deleteLike(currentID);
     }
+
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
 };
 
 
